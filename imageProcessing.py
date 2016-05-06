@@ -5,6 +5,7 @@ import numpy as np
 from skimage.measure import structural_similarity as ssim
 import matplotlib.pyplot as plt
 import smtplib
+import RPi.GPIO as GPIO
 
 print("Image Processing")
 
@@ -52,6 +53,10 @@ try:
         	smtpObj.sendmail(sender, receivers, message)
         	print "Successfully sent email"
         	smtpObj.quit()
+		
+		GPIO.setmode(GPIO.BCM)
+		GPIO.setup(17, GPIO.OUT)
+		GPIO.output(17,True)
 	else:
 		print "Not similar"
 except smtplib.SMTPException as E:
