@@ -1,6 +1,7 @@
 import cv2
 from picamera import PiCamera
 import time
+from twilio.rest import TwilioRestClient
 import numpy as np
 from skimage.measure import structural_similarity as ssim
 import matplotlib.pyplot as plt
@@ -25,8 +26,8 @@ message = """Fill up the damn coffee pot
 all the things.
 """
 
-template = cv2.imread("empty_01.jpg")
-image2 = cv2.imread("empty_01.jpg")
+template = cv2.imread("empty_pot.jpg")
+image2 = cv2.imread("currentState.jpg")
 
 template = cv2.cvtColor(template, cv2.COLOR_BGR2GRAY)
 image2 = cv2.cvtColor(image2, cv2.COLOR_BGR2GRAY)
@@ -34,7 +35,7 @@ image2 = cv2.cvtColor(image2, cv2.COLOR_BGR2GRAY)
 w, h = template.shape[::-1]
 
 res = cv2.matchTemplate(image2, template, cv2.TM_CCOEFF_NORMED)
-threshhold = 0.8
+threshhold = 0.3
 loc = np.where(res >= threshhold)
 
 found = False
@@ -57,6 +58,7 @@ try:
 		GPIO.setmode(GPIO.BCM)
 		GPIO.setup(17, GPIO.OUT)
 		GPIO.output(17,True)
+		GPIO.output(17,False)
 	else:
 		print "Not similar"
 except smtplib.SMTPException as E:
