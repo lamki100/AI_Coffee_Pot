@@ -7,6 +7,8 @@ from skimage.measure import structural_similarity as ssim
 import matplotlib.pyplot as plt
 import smtplib
 import RPi.GPIO as GPIO
+import sys
+from twython import Twython
 
 print("Image Processing")
 
@@ -58,7 +60,16 @@ try:
 		GPIO.setmode(GPIO.BCM)
 		GPIO.setup(17, GPIO.OUT)
 		GPIO.output(17,True)
-		
+		#GPIO.output(17,False)
+
+		APP_KEY = 'tuQTZH61OTO8kyzgIvWFfHGoZ'  # Customer Key here
+		APP_SECRET = 'Xi9WIZ0D3Gf3SnkMPsmYlw95mAyoupaRaw8HMHnnUMt7ezmN3y'  # Customer secret here
+		OAUTH_TOKEN = '729428062283038720-Y2UMexvUfEWJJjAOcn0sMLsTQvwfEvK'  # Access Token here
+		OAUTH_TOKEN_SECRET = 'CNN2ej68ptONetWPhGvUJjSOYLVZy4FCgNilCv5aMVGsQ'  # Access Token Secret here
+
+		twitter = Twython(APP_KEY, APP_SECRET, OAUTH_TOKEN, OAUTH_TOKEN_SECRET)
+
+		twitter.update_status(status=cmdargs[1])
 	else:
 		print "Not similar"
 except smtplib.SMTPException as E:
